@@ -87,3 +87,6 @@ On the basis of **prototype** and set of properties passed **Object.create** cre
 
 Let's us see a diagrammatic representation of the snippet given above:
 
+![Figure 2 - Inheritance Revisited.jpg](https://raw.githubusercontent.com/NamitaMalik/JavaScript-Inheritance-Revisited/master/Figure%202%20-%20Inheritance%20Revisited.jpg)
+
+There are a lot of ways to achieve a single thing, but it depends upon the need of the project and the situation that one can decide which way to adopt!
