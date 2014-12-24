@@ -4,7 +4,6 @@ LivingThing.prototype.move = function () {
     console.log("I am living thing! I can move!!");
 };
 function Bird() {
-    //LivingThing.call(this);
 }
 Bird.prototype = Object.create(LivingThing.prototype);
 Bird.prototype.constructor = Bird;
@@ -12,7 +11,6 @@ Bird.prototype.fly = function () {
     console.log("I am bird! I can fly!!");
 };
 function Peacock() {
-    //Bird.call(this);
 }
 Peacock.prototype = Object.create(Bird.prototype);
 Peacock.prototype.constructor = Peacock;
