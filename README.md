@@ -4,7 +4,7 @@ In one of my previous [blog](http://codechutney.in/blog/javascript/inheritance-i
 
 But the demo given in the [previous blog](http://codechutney.in/blog/javascript/inheritance-in-javascript/) had some serious flaws or if not a flaw then you can say a bad advice or maybe not a good way to implement **inheritance**.
 
-Demo in the [previous blog](http://codechutney.in/blog/javascript/inheritance-in-javascript/) looked like:
+Demo in the [previous blog](http://codechutney.in/blog/javascript/inheritance-in-javascript/) looked lik:
 
 ```JavaScript
 function LivingThing() {
