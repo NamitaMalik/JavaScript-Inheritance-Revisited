@@ -44,7 +44,7 @@ Now suppose of there are 10 objects in the chain, then 10 **functions** would al
 
 ![Function as data in per Instance.png](https://raw.githubusercontent.com/NamitaMalik/JavaScript-Inheritance-Revisited/master/Function%20as%20data%20in%20per%20Instance.png)
 
-So what is the better approach? How to get move() and fly() **functions** in Peacock class without making their copies each time a new object is created?
+So what is the better approach? How to get ```move()``` and ```fly()``` **functions** in Peacock class without making copies each time a new object is created? How to avoid ```dance()``` function getting created with each object?
 
 **The Solution**
 
