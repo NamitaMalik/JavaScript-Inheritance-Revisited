@@ -34,11 +34,15 @@ peacock.move(); // I am living thing! I can move!!
 
 So let's discuss the problem with the above piece of code:
 
-1. We were defining a **function** inside the **constructor**. So every time a new object would be created, it would get its own copy of that **function**. So suppose of there are 10 objects in the chain, then 10 **functions** would also be there. We know that **functions** are data, therefore if one **function** takes 10 bytes of data then 10 would obviously take 100 bytes which is quite an inefficient way of doing things. Let's understand more with the help of this diagram:
+We were defining a **function** inside the **constructor**, so every time a new object would be created, it would get its own copy of that **function**. When we do ```Bird.prototype = new LivingThing();```, a new ```LivingThing``` object would be created, which would be copy of the original ```LivingThing``` object, whereas ```Bird``` would be referring this object and accessing that function from this newly created ```LivingThing``` object.
 
 ![Figure 1 - Inheritance Revisited.jpg](https://raw.githubusercontent.com/NamitaMalik/JavaScript-Inheritance-Revisited/master/Figure%201%20-%20Inheritance%20Revisited.jpg)
 
 Above diagram shows how **inheritance** is happening through **prototype chaining** in and in addition to it, it also shows that how **function** declared in super class is available in the further sub classes also. But only problem is number of new **functions** getting created whenever a new object is created.
+
+Now suppose of there are 10 objects in the chain, then 10 **functions** would also be there. We know that **functions** are data, therefore if one **function** takes 10 bytes of data then 10 would obviously take 100 bytes which is quite an inefficient way of doing things. See this diagrammatic representation showing what will happen if numerous ```Peacock``` objects are created:
+
+![Function as data in per Instance.png](https://raw.githubusercontent.com/NamitaMalik/JavaScript-Inheritance-Revisited/master/Function%20as%20data%20in%20per%20Instance.png)
 
 So what is the better approach? How to get move() and fly() **functions** in Peacock class without making their copies each time a new object is created?
 
