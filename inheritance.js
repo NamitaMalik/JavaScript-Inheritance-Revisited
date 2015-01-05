@@ -29,6 +29,6 @@ Peacock.prototype.dance = function () {
 };
 
 var peacock = new Peacock("While", "10m/s", "snakes");
-peacock.dance(); // I am Peacock! I can dance
-peacock.fly(); // I am bird! I can fly!!
-peacock.move(); // I am living thing! I can move!!
+peacock.dance(); // I am Peacock! I can dance!! And my Color is:  While
+peacock.fly(); // I am bird! I can fly!! And My speed is:  10m/s
+peacock.move(); // I am living thing! I can move!! And I eat:  snakes
