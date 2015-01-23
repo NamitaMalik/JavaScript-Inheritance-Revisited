@@ -70,7 +70,7 @@ Peacock.prototype.dance = function () {
 
 Now if we create multiple objects of Peacock class, all having same object in **prototype** property, so all the  Peacock object will get ```dance()``` method via **prototype chaining**. Now ```dance()``` method will take memory once only. :-)
 
-**Second Problem**: When we do ```Peacock.prototype = new Bird();```, a new Bird object would be created, and store to Peacock **prototype**. So when we create new object of Peacock class, all the Peacock objects having same object in **prototype** as parent object(Bird object). As all the Peacock objects have single parent Bird object, so whatever we will change in that Bird object, will be reflect for all the child peacock object. If one child object want to update its parent property, but when it will update parent property, it will updated for all other peacock objects, which is not correct **inheritance**.
+**Second Problem**: When we do ```Peacock.prototype = new Bird();```, a new Bird object would be created, and store to Peacock **prototype**. So all the Peacock objects having same object in **prototype** as parent object(Bird object). As all the Peacock objects have single parent Bird object, so whatever we will change in that Bird object, will be reflect for all the child peacock object. If one child object update parent property, it will be updated for all other peacock objects, which is not correct **inheritance**.
 
 ```JavaScript
 function Bird() {
@@ -92,13 +92,13 @@ console.log("p1's parent Properties", p1.birdProperty); // { flySpeed: '30m/s', 
 console.log("p2's parent Properties", p2.birdProperty); // { flySpeed: '30m/s', maxHeight: '5km' }
 ```
 
-> NOTE: If will notice, we were updating flySpeed of peacock p1, and p2's flySpeed has also updated.
+> NOTE: Here we can notice that we were updating flySpeed of peacock p1, and p2's flySpeed has been also updated.
 
 ![Figure 1 - Inheritance Revisited.jpg](https://raw.githubusercontent.com/NamitaMalik/JavaScript-Inheritance-Revisited/master/Figure%201%20-%20Inheritance%20Revisited.jpg)
 
 Above diagram shows how **inheritance** is happening through **prototype chaining** in and in addition to it, it also shows that how **function** declared in super class is available in the further sub classes also.
 
-**Third Problem**: If we would try to update parent property via child object, and if property is primitive then it will create a new property in child object instead of updating parent property, and same thing will be apply for the object if you assigning new object. If you are updating any property then it will update in parent object property. It will set new property in child object instead of updating parent property.
+**Third Problem**: If we would try to update parent property via child object, and if property is primitive then it will create a new property in child object instead of updating parent property, and same thing will be apply for the object if we assign new object. When we will try to assign new object then it will create a new variable and that object reference will be assign there. But if you are updating any property of object value, then it will update in parent object property. It will not set new property in child object instead of updating parent property (As discussed in Second Problem.).
 
 
 
