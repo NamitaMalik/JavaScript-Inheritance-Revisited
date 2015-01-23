@@ -98,9 +98,7 @@ console.log("p2's parent Properties", p2.birdProperty); // { flySpeed: '30m/s', 
 
 Above diagram shows how **inheritance** is happening through **prototype chaining** in and in addition to it, it also shows that how **function** declared in super class is available in the further sub classes also.
 
-
-
-**Third Problem**: If we would try to update parent property via child object, It will set new property in child object instead of updating parent property.
+**Third Problem**: If we would try to update parent property via child object, and if property is primitive then it will create a new property in child object instead of updating parent property, and same thing will be apply for the object if you assigning new object. If you are updating any property then it will update in parent object property. It will set new property in child object instead of updating parent property.
 
 
 
