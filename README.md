@@ -36,7 +36,16 @@ So let's discuss the problem with the above piece of code:
 
 **First Problem**: We were defining a **function** inside the **constructor** **function**, so every time a new object would be created, it would get its own copy of that member **function**.
 
-Now suppose of there are 10 objects in the chain, then 10 **functions** would also be there(Each object would be having a **function**) because we know that **functions** are data in **JavaScript**, therefore if one **function** takes 10 bytes of data then 10 objects would obviously take 100 bytes which is quite an inefficient way of doing things. See this diagrammatic representation showing what will happen if numerous ```Peacock``` objects are created:
+**Old Peacock Class:**
+```JavaScript
+function Peacock() {
+    this.dance = function() {
+      console.log("I am Peacock! I can dance");
+    };
+}
+```
+
+Now suppose of there are 10 Peacock objects in the chain, then 10 ```dance()``` **functions** would also be there(Each object would be having a **function** which is defined in **constructor** **function**) because we know that **functions** are data in **JavaScript**, therefore if one **function** takes 10 bytes of data then 10 objects would obviously take 100 bytes which is quite an inefficient way of doing things. See this diagrammatic representation showing what will happen if numerous ```Peacock``` objects are created:
 
 ![Function as data in per Instance.png](https://raw.githubusercontent.com/NamitaMalik/JavaScript-Inheritance-Revisited/master/Function%20as%20data%20in%20per%20Instance.png)
 
@@ -46,12 +55,12 @@ So what is the better approach? How to avoid **function** getting created with e
 
 **The Solution**
 
-Let's keep the **constructor** **functions** at place which is common, so that they can be accessed by any **object**. To do this let's make this **function** **static** and to make a **function** **static** in **JavaScript**, all we have to do is put that **function** in the **prototype**.
+Let's keep the **function** of **constructor** **function** at place which is common, so that they can be accessed by any Peacock **object**. To do this let's make this **function** **static** and to make a **function** **static** in **JavaScript**, all we have to do is put that **function** in the **prototype**.
 
-So, instead of creating **function** ```dance()``` inside the **constructor** of Peacock, create it inside the **prototype** of Peacock so it will be common in all the objects:
+So, instead of creating **function** ```dance()``` inside the **constructor** **function** of Peacock, create it inside the **prototype** of Peacock so it will be common in all the objects as below:
 
+**New Peacock Class:**
 ```JavaScript
-// Peacock Class
 function Peacock() {
 }
 Peacock.prototype.dance = function () {
@@ -59,13 +68,41 @@ Peacock.prototype.dance = function () {
 };
 ```
 
+Now if we create multiple objects of Peacock class, all having same object in **prototype** property, so all the  Peacock object will get ```dance()``` method via **prototype chaining**. Now ```dance()``` method will take memory once only. :-)
 
+**Second Problem**: When we do ```Peacock.prototype = new Bird();```, a new Bird object would be created, and store to Peacock **prototype**. So when we create new object of Peacock class, all the Peacock objects having same object in **prototype** as parent object(Bird object). As all the Peacock objects have single parent Bird object, so whatever we will change in that Bird object, will be reflect for all the child peacock object. If one child object want to update its parent property, but when it will update parent property, it will updated for all other peacock objects, which is not correct **inheritance**.
 
-When we do ```Bird.prototype = new LivingThing();```, a new ```LivingThing``` object would be created, which would be copy of the original ```LivingThing``` object, whereas ```Bird``` would be referring this object and accessing that function from this newly created ```LivingThing``` object.
+```JavaScript
+function Bird() {
+    this.birdProperty = {
+        flySpeed:'20m/s',
+        maxHeight:'5km'
+    };
+}
+function Peacock() {
+}
+Peacock.prototype = new Bird();
+Peacock.prototype.constructor = Peacock;
+var p1 = new Peacock();
+var p2 = new Peacock();
+console.log("p1's parent Properties", p1.birdProperty); // { flySpeed: '20m/s', maxHeight: '5km' }
+console.log("p2's parent Properties", p2.birdProperty); // { flySpeed: '20m/s', maxHeight: '5km' }
+p1.birdProperty.flySpeed = '30m/s';
+console.log("p1's parent Properties", p1.birdProperty); // { flySpeed: '30m/s', maxHeight: '5km' }
+console.log("p2's parent Properties", p2.birdProperty); // { flySpeed: '30m/s', maxHeight: '5km' }
+```
+
+> NOTE: If will notice, we were updating flySpeed of peacock p1, and p2's flySpeed has also updated.
 
 ![Figure 1 - Inheritance Revisited.jpg](https://raw.githubusercontent.com/NamitaMalik/JavaScript-Inheritance-Revisited/master/Figure%201%20-%20Inheritance%20Revisited.jpg)
 
-Above diagram shows how **inheritance** is happening through **prototype chaining** in and in addition to it, it also shows that how **function** declared in super class is available in the further sub classes also. But only problem is number of new **functions** getting created whenever a new object is created.
+Above diagram shows how **inheritance** is happening through **prototype chaining** in and in addition to it, it also shows that how **function** declared in super class is available in the further sub classes also.
+
+
+
+**Third Problem**: If we would try to update parent property via child object, It will set new property in child object instead of updating parent property.
+
+
 
 
 Now, create an **object** of **prototype** and pass it in the **prototype** of next object. This can be seen in the snippet below:
