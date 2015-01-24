@@ -7,7 +7,7 @@ LivingThing.prototype.move = function () {
 };
 
 // Bird Class
-function Bird(flySpeed, food) {
+function Bird(food, flySpeed) {
     LivingThing.apply(this, [food]);
     this.flySpeed = flySpeed;
 }
@@ -18,8 +18,8 @@ Bird.prototype.fly = function () {
 };
 
 // Peacock Class
-function Peacock(color, flySpeed, food) {
-    Bird.call(this, flySpeed, food);
+function Peacock(food, flySpeed, color) {
+    Bird.call(this, food, flySpeed);
     this.color = color;
 }
 Peacock.prototype = Object.create(Bird.prototype);
@@ -28,7 +28,7 @@ Peacock.prototype.dance = function () {
     console.log("I am Peacock! I can dance!! And my Color is: ", this.color);
 };
 
-var peacock = new Peacock("While", "10m/s", "snakes");
+var peacock = new Peacock("snakes", "10m/s", "While");
 peacock.dance(); // I am Peacock! I can dance!! And my Color is:  While
 peacock.fly(); // I am bird! I can fly!! And My speed is:  10m/s
 peacock.move(); // I am living thing! I can move!! And I eat:  snakes
