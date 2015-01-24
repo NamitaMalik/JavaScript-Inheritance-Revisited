@@ -32,7 +32,7 @@ peacock.fly(); // I am bird! I can fly!!
 peacock.move(); // I am living thing! I can move!!
 ```
 
-So let's discuss the problem with the above piece of code:
+So let's first discuss the problems with the above piece of code then we will discuss the solution!
 
 **First Problem**: We were defining a **function** inside the **constructor** **function**, so every time a new object would be created, it would get its own copy of that member **function**.
 
@@ -45,13 +45,13 @@ function Peacock() {
 }
 ```
 
-Now suppose of there are 10 Peacock objects in the chain, then 10 ```dance()``` **functions** would also be there(Each object would be having a **function** which is defined in **constructor** **function**) because we know that **functions** are data in **JavaScript**, therefore if one **function** takes 10 bytes of data then 10 objects would obviously take 100 bytes which is quite an inefficient way of doing things. See this diagrammatic representation showing what will happen if numerous ```Peacock``` objects are created:
+Now suppose of there are 10 Peacock objects in the chain, then 10 ```dance()``` **functions** would also be there(Each object would be having a ```dance()``` **function** which is defined in **constructor** **function**) because we know that **functions** are data in **JavaScript**, therefore if one **function** takes 10 bytes of data then 10 objects would obviously take 100 bytes which is quite an inefficient way of doing things. See this diagrammatic representation showing what will happen if numerous ```Peacock``` objects are created:
 
 ![Function as data in per Instance.png](https://raw.githubusercontent.com/NamitaMalik/JavaScript-Inheritance-Revisited/master/Function%20as%20data%20in%20per%20Instance.png)
 
 > NOTE: If we are defining 5 **functions** into **constructor** **function**, and each **function** takes 10 bytes then each object will take 50 bytes and 10 objects will take 10*50=500 bytes. And memory will continuously increase by 50 bytes with each object. Which is seriously bad way.
 
-**Second Problem**: When we do ```Peacock.prototype = new Bird();```, a new Bird object would be created, and store to Peacock **prototype**. So all the Peacock objects having same object in **prototype** as parent object(Bird object). As all the Peacock objects have single parent Bird object, so whatever we will change in that Bird object, will be reflect for all the child peacock object. If one child object update parent property, it will be updated for all other peacock objects, which is not correct **inheritance**.
+**Second Problem**: When we do ```Peacock.prototype = new Bird();```, a new Bird object would be created, and store to Peacock **prototype**. So all the Peacock objects having same object in **prototype** as parent object(Bird object). As all the Peacock objects have single parent Bird object, so whatever we will change in that Bird object, will be reflect for all the child peacock object. If one child object will update any parent property, it will be updated for all other child peacock objects, which is not correct **inheritance**.
 
 ```JavaScript
 function Bird() {
@@ -73,13 +73,13 @@ console.log("p1's parent Properties", p1.birdProperty); // { flySpeed: '30m/s', 
 console.log("p2's parent Properties", p2.birdProperty); // { flySpeed: '30m/s', maxHeight: '5km' }
 ```
 
-> NOTE: Here we can notice that we were updating flySpeed of peacock p1, and p2's flySpeed has been also updated.
+> NOTE: Here we can notice that we were updating flySpeed of peacock p1, and peacock p2's flySpeed has been updated too.
 
 ![Figure 1 - Inheritance Revisited.jpg](https://raw.githubusercontent.com/NamitaMalik/JavaScript-Inheritance-Revisited/master/Figure%201%20-%20Inheritance%20Revisited.jpg)
 
 Above diagram shows how **inheritance** is happening through **prototype chaining** in and in addition to it, it also shows that how **function** declared in super class is available in the further sub classes also.
 
-**Third Problem**: If we would try to update parent property via child object, and if property is primitive then it will create a new property in child object instead of updating parent property, and same thing will be apply for the object if we assign new object. When we assign new object then in any variable then it will create a new variable in child object and assign reference of that newly created object into that newly create variable. But if you are updating any property of object value, then it will update in parent object property(As discussed in Second Problem.).
+**Third Problem**: If we would try to update parent property via child object, and if property is primitive then it will create a new property in child object instead of updating parent property, and same thing will be apply for the object if we assign new object. When we assign new object then in any variable then it will create a new variable in child object and assign reference of that newly created object into that newly create variable(So there will be two variable with same name, one in parent Bird object and second in child Peacock object so it may be give you wrong/unexpected result.). But if you are updating any property of object value, then it will update in parent object property(As discussed in Second Problem.).
 
 **Fourth Problem**: Suppose ```LivingThing``` class has a property with name **food**, which is set into **Constructor** **function** as below:
 
@@ -89,7 +89,7 @@ function LivingThing(food) {
 }
 ```
 
-And ```Bird``` class also has a property with named **flySpeed**, which is also set into **Constructor** **function**, and user can also pass **food** property to set, as Bird is child class of Living Thing:
+And ```Bird``` class also has a property with named **flySpeed**, which is also set into **Constructor** **function**, and user can also pass **food** property along with **flySpeed** to set, as Bird is child class of ```LivingThing``` So it should have **food** property:
 
 ```JavaScript
 function Bird(food, flySpeed) {
@@ -98,7 +98,7 @@ function Bird(food, flySpeed) {
 }
 ```
 
-And ```Peacock``` class also has a property with named **color**, which is also set into **Constructor** **function** and user can also pass **food** and **flySpeed** properties to set, as Peacock is child class of Bird.
+And ```Peacock``` class also has a property with named **color**, which is also set into **Constructor** **function** and user can also pass **food** and  **flySpeed** properties along with **color** to set, as Peacock is child class of ```Bird``` So it should have **food** and **flySpeed** properties.
 
 ```JavaScript
 function Peacock(food, flySpeed, color) {
