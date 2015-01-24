@@ -176,9 +176,9 @@ Let's us see a diagrammatic representation of the snippet given above:
 
 ![Figure 2 - Inheritance Revisited.jpg](https://raw.githubusercontent.com/NamitaMalik/JavaScript-Inheritance-Revisited/master/Figure%202%20-%20Inheritance%20Revisited.jpg)
 
-**Third Solution**: we passed some properties to our **Peacock** object which could not be done in the previous implementation. We have passed "White" , "10m/s" and "snakes" to our Peacock object. So how are we able to do this?
+**Third Solution**: we passed some properties to our **Peacock** object which could not be done in the previous implementation. If we passed "White" , "10m/s" and "snakes" to our Peacock object. So how are we able to do this?
 
-Closely see the ```Peacock``` function and notice that we have made the ```Bird``` function point to the ```Peacock``` object. We have used ```call``` here as we know that there is no ```super``` keyword in ```JavaScript``` to point to the parent constructor. Similarily, we have made ```LivingThing``` function point to the peacock object. So the gist is that we are executing ```LivingThing``` and ```Bird``` functions in ```context``` to ```Peacock``` object.
+For this problem, we have to call parent class **constructor** into child class **constructor** like other languages. In other languages, when we call parent class **constructor** from child class **constructor**, then parent class **constructor** calls with same object/reference of child class object. So we have to take care of both the things! Calling parent class **constructor** into child class **constructor** and calling the parent class **constructor** with the reference of child class object only. Calling parent class **constructor** into child class **constructor** is very easy and for calling parent class **constructor** with same child class object's reference, we can use **JavaScript** delegation feature( **call**/ **apply**).
 
 ```JavaScript
 // LivingThing Class
@@ -189,7 +189,7 @@ LivingThing.prototype.move = function () {
     console.log("I am living thing! I can move!! And I eat: ", this.food);
 };
 // Bird Class
-function Bird(flySpeed, food) {
+function Bird(food, flySpeed) {
     LivingThing.apply(this, [food]);
     this.flySpeed = flySpeed;
 }
@@ -199,8 +199,8 @@ Bird.prototype.fly = function () {
     console.log("I am bird! I can fly!! And My speed is: ", this.flySpeed);
 };
 // Peacock Class
-function Peacock(color, flySpeed, food) {
-    Bird.call(this, flySpeed, food);
+function Peacock(food, flySpeed, color) {
+    Bird.call(this, food, flySpeed);
     this.color = color;
 }
 Peacock.prototype = Object.create(Bird.prototype);
@@ -208,11 +208,13 @@ Peacock.prototype.constructor = Peacock;
 Peacock.prototype.dance = function () {
     console.log("I am Peacock! I can dance!! And my Color is: ", this.color);
 };
-var peacock = new Peacock("White", "10m/s", "snakes");
+var peacock = new Peacock("snakes", "10m/s", "While");
 peacock.dance(); // I am Peacock! I can dance!! And my Color is:  While
 peacock.fly(); // I am bird! I can fly!! And My speed is:  10m/s
 peacock.move(); // I am living thing! I can move!! And I eat:  snakes
 ```
+
+Closely see the ```Peacock``` function and notice that we have made the ```Bird``` function point to the ```Peacock``` object. We have used ```call``` here as we know that there is no ```super``` keyword in ```JavaScript``` to point to the parent **constructor**. Similarily, we have made ```LivingThing``` function point to the peacock object. So the gist is that we are executing ```LivingThing``` and ```Bird``` functions in ```context``` to ```Peacock``` object only.
 
 > NOTE: With the help of Second and Third solution, our Remaining Problem will solve. :-)
 
