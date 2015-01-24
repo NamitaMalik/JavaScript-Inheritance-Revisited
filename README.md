@@ -75,10 +75,6 @@ console.log("p2's parent Properties", p2.birdProperty); // { flySpeed: '30m/s', 
 
 > NOTE: Here we can notice that we were updating flySpeed of peacock p1, and peacock p2's flySpeed has been updated too.
 
-![Figure 1 - Inheritance Revisited.jpg](https://raw.githubusercontent.com/NamitaMalik/JavaScript-Inheritance-Revisited/master/Figure%201%20-%20Inheritance%20Revisited.jpg)
-
-Above diagram shows how **inheritance** is happening through **prototype chaining** in and in addition to it, it also shows that how **function** declared in super class is available in the further sub classes also.
-
 **Third Problem**: If we would try to update parent property via child object, and if property is primitive then it will create a new property in child object instead of updating parent property, and same thing will be apply for the object if we assign new object. When we assign new object then in any variable then it will create a new variable in child object and assign reference of that newly created object into that newly create variable(So there will be two variable with same name, one in parent Bird object and second in child Peacock object so it may be give you wrong/unexpected result.). But if you are updating any property of object value, then it will update in parent object property(As discussed in Second Problem.).
 
 **Fourth Problem**: Suppose ```LivingThing``` class has a property with name **food**, which is set into **Constructor** **function** as below:
@@ -109,13 +105,17 @@ function Peacock(food, flySpeed, color) {
 
 And whenever user is creating an object of ```Peacock``` class, he will be assuming that he will pass all three properties **color**, **flySpeed** and **food**(e.g. ```var peacock = new Peacock("White", "10m/s", "snakes")```) and all of these properties will be set. But that is not the case is happening here.
 
+![Figure 1 - Inheritance Revisited.jpg](https://raw.githubusercontent.com/NamitaMalik/JavaScript-Inheritance-Revisited/master/Figure%201%20-%20Inheritance%20Revisited.jpg)
+
+Above diagram shows how **inheritance** is happening through **prototype chaining** in and in addition to it, it also shows that how **function** declared in super class is available in the further sub classes also.
+
 So what is the better approach? How to avoid **function** getting created with each object? How to implement right **inheritance**? And how to solve all above problems?
 
 **The Solution**:
 
-**First Solution**: Let's keep the **function** of **constructor** **function** at place which is common, so that they can be accessed by any Peacock **object**. To do this let's make this **function** **static** and to make a **function** **static** in **JavaScript**, all we have to do is put that **function** in the **prototype**.
+**First Solution**: Let's keep the **function** of **constructor** **function** at place which is common, so that they can be accessed by all Peacock **object**. To do this let's make this **function** **static** and to make a **function** **static** in **JavaScript**, all we have to do is put that **function** in the **prototype**.
 
-So, instead of creating **function** ```dance()``` inside the **constructor** **function** of Peacock, create it inside the **prototype** of Peacock so it will be common in all the objects as below:
+So, instead of creating **function** ```dance()``` inside the **constructor** **function** of Peacock, create it inside the **prototype** of Peacock so it will be common for all the objects.
 
 **New Peacock Class:**
 ```JavaScript
@@ -126,7 +126,7 @@ Peacock.prototype.dance = function () {
 };
 ```
 
-Now if we create multiple objects of Peacock class, all having same object in **prototype** property, so all the  Peacock object will get ```dance()``` method via **prototype chaining**. Now ```dance()``` method will take memory once only. :-)
+Now if we create multiple objects of Peacock class then all the Peacock objects will be having same object in **prototype** property, so all the  Peacock object will get ```dance()``` method via **prototype chaining**. Now ```dance()``` method will take memory once only. :-)
 
 > NOTE: With the help of this solution, our **First Problem** will solve. :-)
 
