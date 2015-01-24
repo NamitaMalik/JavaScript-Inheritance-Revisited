@@ -51,7 +51,7 @@ Now suppose of there are 10 Peacock objects in the chain, then 10 ```dance()``` 
 
 > NOTE: If we are defining 5 **functions** into **constructor** **function**, and each **function** takes 10 bytes then each object will take 50 bytes and 10 objects will take 10*50=500 bytes. And memory will continuously increase by 50 bytes with each object, which is seriously a bad way.
 
-**Second Problem**: When we do ```Peacock.prototype = new Bird();```, a new Bird object would be created, and stored to Peacock **prototype**. So all the Peacock objects are now having same object in **prototype** as parent object(Bird object). As all the Peacock objects have single parent Bird object, so whatever we will change in that Bird object, will be reflect for all the child peacock object. If one child object will update any parent property, it will be updated for all other child peacock objects, which is not correct **inheritance**.
+**Second Problem**: When we do ```Peacock.prototype = new Bird();```, a new Bird object would be created, and stored to Peacock **prototype**. So all the Peacock objects are now having same object in **prototype** as parent object(Bird object). As all the Peacock objects have single parent Bird object, so whatever we will change in that Bird object, will be reflect for all the child peacock objects. If one child object will update any parent property, it will be updated for all other child peacock objects, which is not correct **inheritance**.
 
 ```JavaScript
 function Bird() {
@@ -85,7 +85,7 @@ function LivingThing(food) {
 }
 ```
 
-And ```Bird``` class also has a property named **flySpeed**, which is also set into **Constructor** **function**, and user can also pass **food** property along with **flySpeed** to set, as Bird is child class of ```LivingThing``` So it should have **food** property:
+And ```Bird``` class also has a property named **flySpeed**, which is also set into **Constructor** **function**, and user can also pass **food** property along with **flySpeed** to set, as Bird is child class of ```LivingThing``` So it should have **food** property as well:
 
 ```JavaScript
 function Bird(food, flySpeed) {
@@ -94,7 +94,7 @@ function Bird(food, flySpeed) {
 }
 ```
 
-And ```Peacock``` class also has a property named **color**, which is also set into **Constructor** **function** and user can also pass **food** and  **flySpeed** properties along with **color**, as Peacock is child class of ```Bird``` so it should have **food** and **flySpeed** properties.
+And ```Peacock``` class also has a property named **color**, which is also set into **Constructor** **function** and user can also pass **food** and  **flySpeed** properties along with **color**, as Peacock is child class of ```Bird``` so it should have **food** and **flySpeed** properties too.
 
 ```JavaScript
 function Peacock(food, flySpeed, color) {
@@ -178,7 +178,7 @@ Let's us see a diagrammatic representation of the snippet given above:
 
 **Third Solution**: We passed some properties to our **Peacock** object which could not be done in the previous implementation. What if we passed "White" , "10m/s" and "snakes" to our Peacock object?
 
-For this problem, we have to call parent class **constructor** into child class **constructor** like other languages. In other languages, when we call parent class **constructor** from child class **constructor**, then parent class **constructor** calls with same object/reference of child class object. So we have to take care of both the things! Calling parent class **constructor** into child class **constructor** and calling the parent class **constructor** with the reference of child class object only. Calling parent class **constructor** into child class **constructor** is very easy and for calling parent class **constructor** with same child class object's reference, we can use **JavaScript** delegation feature( **call**/ **apply**).
+For this problem, we have to call parent class **constructor** into child class **constructor** like other languages. In other languages, when we call parent class **constructor** from child class **constructor**, then parent class **constructor** is called with same object/reference of child class object. So we have to take care of both the things - Calling parent class **constructor** into child class **constructor** and calling the parent class **constructor** with the reference of child class object only. Calling parent class **constructor** into child class **constructor** is very easy and for calling parent class **constructor** with same child class object's reference, we can use **JavaScript** delegation feature( **call**/ **apply**).
 
 ```JavaScript
 // LivingThing Class
