@@ -176,14 +176,7 @@ Let's us see a diagrammatic representation of the snippet given above:
 
 ![Figure 2 - Inheritance Revisited.jpg](https://raw.githubusercontent.com/NamitaMalik/JavaScript-Inheritance-Revisited/master/Figure%202%20-%20Inheritance%20Revisited.jpg)
 
-**Third Solution**:
-
-> NOTE: With the help of Second and Third solution, our Remaining Problem will solve. :-)
-
-
-
-
-we passed some properties to our **Peacock** object which could not be done in the previous implementation. We have passed "White" , "10m/s" and "snakes" to our Peacock object. So how are we able to do this?
+**Third Solution**: we passed some properties to our **Peacock** object which could not be done in the previous implementation. We have passed "White" , "10m/s" and "snakes" to our Peacock object. So how are we able to do this?
 
 Closely see the ```Peacock``` function and notice that we have made the ```Bird``` function point to the ```Peacock``` object. We have used ```call``` here as we know that there is no ```super``` keyword in ```JavaScript``` to point to the parent constructor. Similarily, we have made ```LivingThing``` function point to the peacock object. So the gist is that we are executing ```LivingThing``` and ```Bird``` functions in ```context``` to ```Peacock``` object.
 
@@ -220,5 +213,7 @@ peacock.dance(); // I am Peacock! I can dance!! And my Color is:  While
 peacock.fly(); // I am bird! I can fly!! And My speed is:  10m/s
 peacock.move(); // I am living thing! I can move!! And I eat:  snakes
 ```
+
+> NOTE: With the help of Second and Third solution, our Remaining Problem will solve. :-)
 
 There are a lot of ways to achieve a single thing, but it depends upon the need of the project and the situation that one can decide which way to adopt!
