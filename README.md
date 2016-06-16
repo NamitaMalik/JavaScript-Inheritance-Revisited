@@ -1,10 +1,10 @@
 #JavaScript Inheritance Revisited
 
-In one of my previous [blogs](http://codechutney.in/blog/author/namita.malik/), I had talked about **[inheritance in JavaScript](http://codechutney.in/blog/javascript/inheritance-in-javascript/)**. The main idea of that blog was to share that how **inheritance** can be achieved using **prototype** **chaining**.
+In one of my previous [blogs](https://namitamalik.github.io/), I had talked about **[inheritance in JavaScript](http://namitamalik.github.io/Inheritance-in-JavaScript/)**. The main idea of that blog was to share that how **inheritance** can be achieved using **prototype** **chaining**.
 
-But the demo given in the [that blog](http://codechutney.in/blog/javascript/inheritance-in-javascript/) had some serious flaws or if not a flaw then you can say a bad advice or maybe not a good way to implement **inheritance**.
+But the demo given in the [that blog](http://namitamalik.github.io/Inheritance-in-JavaScript/) had some serious flaws or if not a flaw then you can say a bad advice or maybe not a good way to implement **inheritance**.
 
-Demo in the [previous blog](http://codechutney.in/blog/javascript/inheritance-in-javascript/) on **inheritance** looked like:
+Demo in the [previous blog](http://namitamalik.github.io/Inheritance-in-JavaScript/) on **inheritance** looked like:
 
 ```JavaScript
 function LivingThing() {
@@ -219,3 +219,13 @@ Closely see the ```Peacock``` function and notice that we have made the ```Bird`
 > NOTE: With the help of second and third solution, our remaining Problem will solve. :-)
 
 There are a lot of ways to achieve a single thing, but it depends upon the need of the project and the situation that one can decide which way to adopt!
+
+Follow Me
+---
+[Github](https://github.com/NamitaMalik)
+
+[Twitter](https://twitter.com/namita13_04)
+
+[LinkedIn](https://in.linkedin.com/in/namita-malik-a7885b23)
+
+[More Blogs By Me](https://namitamalik.github.io/)
