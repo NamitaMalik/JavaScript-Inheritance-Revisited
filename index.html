@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Javascript Inheritance Revisited by NamitaMalik</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Javascript Inheritance Revisited</h1>
+      <h2 class="project-tagline">JavaScript Inheritance in a better way.</h2>
+      <a href="https://github.com/NamitaMalik/JavaScript-Inheritance-Revisited" class="btn">View on GitHub</a>
+      <a href="https://github.com/NamitaMalik/JavaScript-Inheritance-Revisited/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/NamitaMalik/JavaScript-Inheritance-Revisited/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="javascript-inheritance-revisited" class="anchor" href="#javascript-inheritance-revisited" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>JavaScript Inheritance Revisited</h1>
+
+<p>In one of my previous <a href="https://namitamalik.github.io/">blogs</a>, I had talked about <strong><a href="http://namitamalik.github.io/Inheritance-in-JavaScript/">inheritance in JavaScript</a></strong>. The main idea of that blog was to share that how <strong>inheritance</strong> can be achieved using <strong>prototype</strong> <strong>chaining</strong>.</p>
+
+<p>But the demo given in the <a href="http://namitamalik.github.io/Inheritance-in-JavaScript/">that blog</a> had some serious flaws or if not a flaw then you can say a bad advice or maybe not a good way to implement <strong>inheritance</strong>.</p>
+
+<p>Demo in the <a href="http://namitamalik.github.io/Inheritance-in-JavaScript/">previous blog</a> on <strong>inheritance</strong> looked like:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">function</span> <span class="pl-en">LivingThing</span>() {
+    <span class="pl-v">this</span>.<span class="pl-en">move</span> <span class="pl-k">=</span> <span class="pl-k">function</span>() {
+        <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">"</span>I am living thing! I can move!!<span class="pl-pds">"</span></span>);
+    };
+}
+<span class="pl-k">function</span> <span class="pl-en">Bird</span>() {
+    <span class="pl-v">this</span>.<span class="pl-en">fly</span> <span class="pl-k">=</span> <span class="pl-k">function</span>() {
+        <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">"</span>I am bird! I can fly!!<span class="pl-pds">"</span></span>);
+    };
+}
+<span class="pl-k">function</span> <span class="pl-en">Peacock</span>() {
+    <span class="pl-v">this</span>.<span class="pl-en">dance</span> <span class="pl-k">=</span> <span class="pl-k">function</span>() {
+      <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">"</span>I am Peacock! I can dance<span class="pl-pds">"</span></span>);
+    };
+}
+<span class="pl-smi">Bird</span>.<span class="pl-c1">prototype</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">LivingThing</span>();
+<span class="pl-smi">Bird</span>.<span class="pl-c1">prototype</span>.<span class="pl-c1">constructor</span> <span class="pl-k">=</span> Bird;
+<span class="pl-smi">Peacock</span>.<span class="pl-c1">prototype</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">Bird</span>();
+<span class="pl-smi">Peacock</span>.<span class="pl-c1">prototype</span>.<span class="pl-c1">constructor</span> <span class="pl-k">=</span> Peacock;
+<span class="pl-k">var</span> peacock <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">Peacock</span>(<span class="pl-s"><span class="pl-pds">"</span>A<span class="pl-pds">"</span></span>);
+<span class="pl-smi">peacock</span>.<span class="pl-en">dance</span>(); <span class="pl-c">// I am Peacock! I can dance</span>
+<span class="pl-smi">peacock</span>.<span class="pl-en">fly</span>(); <span class="pl-c">// I am bird! I can fly!!</span>
+<span class="pl-smi">peacock</span>.<span class="pl-c1">move</span>(); <span class="pl-c">// I am living thing! I can move!!</span></pre></div>
+
+<p>So let's first discuss the problems with the above piece of code then we will discuss the solution!</p>
+
+<p><strong>First Problem</strong>: We were defining a <strong>function</strong> inside the <strong>constructor</strong> <strong>function</strong>, so every time a new object would be created, it would get its own copy of that member <strong>function</strong>.</p>
+
+<p><strong>Old Peacock Class:</strong></p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">function</span> <span class="pl-en">Peacock</span>() {
+    <span class="pl-v">this</span>.<span class="pl-en">dance</span> <span class="pl-k">=</span> <span class="pl-k">function</span>() {
+      <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">"</span>I am Peacock! I can dance<span class="pl-pds">"</span></span>);
+    };
+}</pre></div>
+
+<p>Now suppose of there are 10 Peacock objects in the chain, then 10 <code>dance()</code> <strong>functions</strong> would also be there(Each object would be having a <code>dance()</code> <strong>function</strong> which is defined in <strong>constructor</strong> <strong>function</strong>) because we know that <strong>functions</strong> are data in <strong>JavaScript</strong>, therefore if one <strong>function</strong> takes 10 bytes of data then 10 objects would obviously take 100 bytes which is quite an inefficient way of doing things. See this diagrammatic representation showing what will happen if numerous <code>Peacock</code> objects are created:</p>
+
+<p><img src="https://raw.githubusercontent.com/NamitaMalik/JavaScript-Inheritance-Revisited/master/Function%20as%20data%20in%20per%20Instance.png" alt="Function as data in per Instance.png"></p>
+
+<blockquote>
+<p>NOTE: If we are defining 5 <strong>functions</strong> into <strong>constructor</strong> <strong>function</strong>, and each <strong>function</strong> takes 10 bytes then each object will take 50 bytes and 10 objects will take 10*50=500 bytes. And memory will continuously increase by 50 bytes with each object, which is seriously a bad way.</p>
+</blockquote>
+
+<p><strong>Second Problem</strong>: When we do <code>Peacock.prototype = new Bird();</code>, a new Bird object would be created, and stored to Peacock <strong>prototype</strong>. So all the Peacock objects are now having same object in <strong>prototype</strong> as parent object(Bird object). As all the Peacock objects have single parent Bird object, so whatever we will change in that Bird object, will be reflect for all the child peacock objects. If one child object will update any parent property, it will be updated for all other child peacock objects, which is not correct <strong>inheritance</strong>.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">function</span> <span class="pl-en">Bird</span>() {
+    <span class="pl-v">this</span>.<span class="pl-smi">birdProperty</span> <span class="pl-k">=</span> {
+        flySpeed<span class="pl-k">:</span><span class="pl-s"><span class="pl-pds">'</span>20m/s<span class="pl-pds">'</span></span>,
+        maxHeight<span class="pl-k">:</span><span class="pl-s"><span class="pl-pds">'</span>5km<span class="pl-pds">'</span></span>
+    };
+}
+<span class="pl-k">function</span> <span class="pl-en">Peacock</span>() {
+}
+<span class="pl-smi">Peacock</span>.<span class="pl-c1">prototype</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">Bird</span>();
+<span class="pl-smi">Peacock</span>.<span class="pl-c1">prototype</span>.<span class="pl-c1">constructor</span> <span class="pl-k">=</span> Peacock;
+<span class="pl-k">var</span> p1 <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">Peacock</span>();
+<span class="pl-k">var</span> p2 <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">Peacock</span>();
+<span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">"</span>p1's parent Properties<span class="pl-pds">"</span></span>, <span class="pl-smi">p1</span>.<span class="pl-smi">birdProperty</span>); <span class="pl-c">// { flySpeed: '20m/s', maxHeight: '5km' }</span>
+<span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">"</span>p2's parent Properties<span class="pl-pds">"</span></span>, <span class="pl-smi">p2</span>.<span class="pl-smi">birdProperty</span>); <span class="pl-c">// { flySpeed: '20m/s', maxHeight: '5km' }</span>
+<span class="pl-smi">p1</span>.<span class="pl-smi">birdProperty</span>.<span class="pl-smi">flySpeed</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>30m/s<span class="pl-pds">'</span></span>;
+<span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">"</span>p1's parent Properties<span class="pl-pds">"</span></span>, <span class="pl-smi">p1</span>.<span class="pl-smi">birdProperty</span>); <span class="pl-c">// { flySpeed: '30m/s', maxHeight: '5km' }</span>
+<span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">"</span>p2's parent Properties<span class="pl-pds">"</span></span>, <span class="pl-smi">p2</span>.<span class="pl-smi">birdProperty</span>); <span class="pl-c">// { flySpeed: '30m/s', maxHeight: '5km' }</span></pre></div>
+
+<blockquote>
+<p>NOTE: Here we can notice that we were updating flySpeed of peacock p1, and peacock p2's flySpeed has been updated too.</p>
+</blockquote>
+
+<p><strong>Third Problem</strong>: If we would try to update parent property via child object, and if property is primitive then it will create a new property in child object instead of updating parent property, and same thing will apply to object if we assign new object. When we assign new object in any variable then it will create a new variable in child object and assign reference of that newly created object into that newly created variable(So there will be two variables with same name, one in parent Bird object and second in child Peacock object so it may give you wrong/unexpected results.). But if you are updating any property of object value, then it will get updated in parent object property(As discussed in Second Problem.).</p>
+
+<p><strong>Fourth Problem</strong>: Suppose <code>LivingThing</code> class has a property with name <strong>food</strong>, which is set into <strong>Constructor</strong> <strong>function</strong> as below:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">function</span> <span class="pl-en">LivingThing</span>(<span class="pl-smi">food</span>) {
+    <span class="pl-v">this</span>.<span class="pl-smi">food</span> <span class="pl-k">=</span> food;
+}</pre></div>
+
+<p>And <code>Bird</code> class also has a property named <strong>flySpeed</strong>, which is also set into <strong>Constructor</strong> <strong>function</strong>, and user can also pass <strong>food</strong> property along with <strong>flySpeed</strong> to set, as Bird is child class of <code>LivingThing</code> So it should have <strong>food</strong> property as well:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">function</span> <span class="pl-en">Bird</span>(<span class="pl-smi">food</span>, <span class="pl-smi">flySpeed</span>) {
+    <span class="pl-c">// How to set food property as it is declare in parent class ??</span>
+    <span class="pl-v">this</span>.<span class="pl-smi">flySpeed</span> <span class="pl-k">=</span> flySpeed;
+}</pre></div>
+
+<p>And <code>Peacock</code> class also has a property named <strong>color</strong>, which is also set into <strong>Constructor</strong> <strong>function</strong> and user can also pass <strong>food</strong> and  <strong>flySpeed</strong> properties along with <strong>color</strong>, as Peacock is child class of <code>Bird</code> so it should have <strong>food</strong> and <strong>flySpeed</strong> properties too.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">function</span> <span class="pl-en">Peacock</span>(<span class="pl-smi">food</span>, <span class="pl-smi">flySpeed</span>, <span class="pl-smi">color</span>) {
+    <span class="pl-c">// How to set food and flySpeed properties as it is declared in parent class ??</span>
+    <span class="pl-v">this</span>.<span class="pl-c1">color</span> <span class="pl-k">=</span> color;
+}</pre></div>
+
+<p>And whenever user is creating an object of <code>Peacock</code> class, he will be assuming that he will pass all three properties <strong>color</strong>, <strong>flySpeed</strong> and <strong>food</strong>(e.g. <code>var peacock = new Peacock("White", "10m/s", "snakes")</code>) and all of these properties will be set. But that is not the case is happening here.</p>
+
+<p><img src="https://raw.githubusercontent.com/NamitaMalik/JavaScript-Inheritance-Revisited/master/Figure%201%20-%20Inheritance%20Revisited.jpg" alt="Figure 1 - Inheritance Revisited.jpg"></p>
+
+<p>Above diagram shows how <strong>inheritance</strong> is happening through <strong>prototype chaining</strong> in and in addition to it, it also shows that how <strong>function</strong> declared in super class is available in the further sub classes also.</p>
+
+<p>So what is the better approach? How to avoid <strong>function</strong> getting created with each object? How to implement right <strong>inheritance</strong>? And how to solve all above problems?</p>
+
+<p><strong>The Solution</strong>:</p>
+
+<p><strong>First Solution</strong>: Let's keep the <strong>function</strong> of <strong>constructor</strong> <strong>function</strong> at place which is common, so that they can be accessed by all the Peacock <strong>object</strong>. To do this let's make this <strong>function</strong> <strong>static</strong> and to make a <strong>function</strong> <strong>static</strong> in <strong>JavaScript</strong>, all we have to do is put that <strong>function</strong> in the <strong>prototype</strong>.</p>
+
+<p>So, instead of creating <strong>function</strong> <code>dance()</code> inside the <strong>constructor</strong> <strong>function</strong> of Peacock, create it inside the <strong>prototype</strong> of Peacock so it will be common for all the objects.</p>
+
+<p><strong>New Peacock Class:</strong></p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">function</span> <span class="pl-en">Peacock</span>() {
+}
+<span class="pl-smi">Peacock</span>.<span class="pl-c1">prototype</span>.<span class="pl-en">dance</span> <span class="pl-k">=</span> <span class="pl-k">function</span> () {
+    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">"</span>I am Peacock! I can dance!!<span class="pl-pds">"</span></span>);
+};</pre></div>
+
+<p>Now if we create multiple objects of Peacock class then all the Peacock objects will be having same object in <strong>prototype</strong> property, so all the  Peacock object will get <code>dance()</code> method via <strong>prototype chaining</strong>. Now <code>dance()</code> method will take memory once only. :-)</p>
+
+<blockquote>
+<p>NOTE: With the help of this solution, our <strong>First Problem</strong> will be solved. :-)</p>
+</blockquote>
+
+<p><strong>Second Solution</strong>: Create an <strong>object</strong> of <strong>prototype</strong> and pass it in the <strong>prototype</strong> of next object. So <strong>Inheritance</strong> will perform for <strong>static</strong>/ <strong>prototype</strong> members. This can be seen in the snippet below:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// LivingThing Class</span>
+<span class="pl-k">function</span> <span class="pl-en">LivingThing</span>() {
+}
+<span class="pl-smi">LivingThing</span>.<span class="pl-c1">prototype</span>.<span class="pl-en">move</span> <span class="pl-k">=</span> <span class="pl-k">function</span> () {
+    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">"</span>I am living thing! I can move!!<span class="pl-pds">"</span></span>);
+};
+<span class="pl-c">// Bird Class</span>
+<span class="pl-k">function</span> <span class="pl-en">Bird</span>() {
+}
+<span class="pl-smi">Bird</span>.<span class="pl-c1">prototype</span> <span class="pl-k">=</span> <span class="pl-c1">Object</span>.<span class="pl-en">create</span>(<span class="pl-smi">LivingThing</span>.<span class="pl-c1">prototype</span>);
+<span class="pl-smi">Bird</span>.<span class="pl-c1">prototype</span>.<span class="pl-c1">constructor</span> <span class="pl-k">=</span> Bird;
+<span class="pl-smi">Bird</span>.<span class="pl-c1">prototype</span>.<span class="pl-en">fly</span> <span class="pl-k">=</span> <span class="pl-k">function</span> () {
+    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">"</span>I am bird! I can fly!!<span class="pl-pds">"</span></span>);
+};
+<span class="pl-c">// Peacock Class</span>
+<span class="pl-k">function</span> <span class="pl-en">Peacock</span>() {
+}
+<span class="pl-smi">Peacock</span>.<span class="pl-c1">prototype</span> <span class="pl-k">=</span> <span class="pl-c1">Object</span>.<span class="pl-en">create</span>(<span class="pl-smi">Bird</span>.<span class="pl-c1">prototype</span>);
+<span class="pl-smi">Peacock</span>.<span class="pl-c1">prototype</span>.<span class="pl-c1">constructor</span> <span class="pl-k">=</span> Peacock;
+<span class="pl-smi">Peacock</span>.<span class="pl-c1">prototype</span>.<span class="pl-en">dance</span> <span class="pl-k">=</span> <span class="pl-k">function</span> () {
+    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">"</span>I am Peacock! I can dance!!<span class="pl-pds">"</span></span>);
+};
+<span class="pl-k">var</span> peacock <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">Peacock</span>(<span class="pl-s"><span class="pl-pds">"</span>White<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>10m/s<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>snakes<span class="pl-pds">"</span></span>);
+<span class="pl-smi">peacock</span>.<span class="pl-en">dance</span>(); <span class="pl-c">// I am Peacock! I can dance!!</span>
+<span class="pl-smi">peacock</span>.<span class="pl-en">fly</span>(); <span class="pl-c">// I am bird! I can fly!!</span>
+<span class="pl-smi">peacock</span>.<span class="pl-c1">move</span>(); <span class="pl-c">// I am living thing! I can move!!</span></pre></div>
+
+<p>In the above snippet, we have passed the copy of <strong>prototype</strong> <strong>object</strong> of LivingThing class in the <strong>prototype</strong> of Bird class, with the help of <strong>Object.create</strong>, as <code>Bird.prototype = Object.create(LivingThing.prototype)</code>.</p>
+
+<p>Similarly, in the <strong>prototype</strong> of Peacock class, we have passed the copy of <strong>prototype</strong> <strong>object</strong> of Bird class with the help of <strong>Object.create()</strong> as <code>Peacock.prototype = Object.create(Bird.prototype);</code>.</p>
+
+<p><strong>Object.create</strong> was basically takes following two arguments(second one being the optional):</p>
+
+<ol>
+<li>Prototype</li>
+<li>Set of properties</li>
+</ol>
+
+<p>On the basis of <strong>prototype</strong> and set of properties passed <strong>Object.create</strong> creates a new object.</p>
+
+<p>Let's us see a diagrammatic representation of the snippet given above:</p>
+
+<p><img src="https://raw.githubusercontent.com/NamitaMalik/JavaScript-Inheritance-Revisited/master/Figure%202%20-%20Inheritance%20Revisited.jpg" alt="Figure 2 - Inheritance Revisited.jpg"></p>
+
+<p><strong>Third Solution</strong>: We passed some properties to our <strong>Peacock</strong> object which could not be done in the previous implementation. What if we passed "White" , "10m/s" and "snakes" to our Peacock object?</p>
+
+<p>For this problem, we have to call parent class <strong>constructor</strong> into child class <strong>constructor</strong> like other languages. In other languages, when we call parent class <strong>constructor</strong> from child class <strong>constructor</strong>, then parent class <strong>constructor</strong> is called with same object/reference of child class object. So we have to take care of both the things - Calling parent class <strong>constructor</strong> into child class <strong>constructor</strong> and calling the parent class <strong>constructor</strong> with the reference of child class object only. Calling parent class <strong>constructor</strong> into child class <strong>constructor</strong> is very easy and for calling parent class <strong>constructor</strong> with same child class object's reference, we can use <strong>JavaScript</strong> delegation feature( <strong>call</strong>/ <strong>apply</strong>).</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// LivingThing Class</span>
+<span class="pl-k">function</span> <span class="pl-en">LivingThing</span>(<span class="pl-smi">food</span>) {
+    <span class="pl-v">this</span>.<span class="pl-smi">food</span> <span class="pl-k">=</span> food;
+}
+<span class="pl-smi">LivingThing</span>.<span class="pl-c1">prototype</span>.<span class="pl-en">move</span> <span class="pl-k">=</span> <span class="pl-k">function</span> () {
+    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">"</span>I am living thing! I can move!! And I eat: <span class="pl-pds">"</span></span>, <span class="pl-v">this</span>.<span class="pl-smi">food</span>);
+};
+<span class="pl-c">// Bird Class</span>
+<span class="pl-k">function</span> <span class="pl-en">Bird</span>(<span class="pl-smi">food</span>, <span class="pl-smi">flySpeed</span>) {
+    <span class="pl-smi">LivingThing</span>.<span class="pl-c1">apply</span>(<span class="pl-v">this</span>, [food]);
+    <span class="pl-v">this</span>.<span class="pl-smi">flySpeed</span> <span class="pl-k">=</span> flySpeed;
+}
+<span class="pl-smi">Bird</span>.<span class="pl-c1">prototype</span> <span class="pl-k">=</span> <span class="pl-c1">Object</span>.<span class="pl-en">create</span>(<span class="pl-smi">LivingThing</span>.<span class="pl-c1">prototype</span>);
+<span class="pl-smi">Bird</span>.<span class="pl-c1">prototype</span>.<span class="pl-c1">constructor</span> <span class="pl-k">=</span> Bird;
+<span class="pl-smi">Bird</span>.<span class="pl-c1">prototype</span>.<span class="pl-en">fly</span> <span class="pl-k">=</span> <span class="pl-k">function</span> () {
+    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">"</span>I am bird! I can fly!! And My speed is: <span class="pl-pds">"</span></span>, <span class="pl-v">this</span>.<span class="pl-smi">flySpeed</span>);
+};
+<span class="pl-c">// Peacock Class</span>
+<span class="pl-k">function</span> <span class="pl-en">Peacock</span>(<span class="pl-smi">food</span>, <span class="pl-smi">flySpeed</span>, <span class="pl-smi">color</span>) {
+    <span class="pl-smi">Bird</span>.<span class="pl-c1">call</span>(<span class="pl-v">this</span>, food, flySpeed);
+    <span class="pl-v">this</span>.<span class="pl-c1">color</span> <span class="pl-k">=</span> color;
+}
+<span class="pl-smi">Peacock</span>.<span class="pl-c1">prototype</span> <span class="pl-k">=</span> <span class="pl-c1">Object</span>.<span class="pl-en">create</span>(<span class="pl-smi">Bird</span>.<span class="pl-c1">prototype</span>);
+<span class="pl-smi">Peacock</span>.<span class="pl-c1">prototype</span>.<span class="pl-c1">constructor</span> <span class="pl-k">=</span> Peacock;
+<span class="pl-smi">Peacock</span>.<span class="pl-c1">prototype</span>.<span class="pl-en">dance</span> <span class="pl-k">=</span> <span class="pl-k">function</span> () {
+    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">"</span>I am Peacock! I can dance!! And my Color is: <span class="pl-pds">"</span></span>, <span class="pl-v">this</span>.<span class="pl-c1">color</span>);
+};
+<span class="pl-k">var</span> peacock <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">Peacock</span>(<span class="pl-s"><span class="pl-pds">"</span>snakes<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>10m/s<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>While<span class="pl-pds">"</span></span>);
+<span class="pl-smi">peacock</span>.<span class="pl-en">dance</span>(); <span class="pl-c">// I am Peacock! I can dance!! And my Color is:  While</span>
+<span class="pl-smi">peacock</span>.<span class="pl-en">fly</span>(); <span class="pl-c">// I am bird! I can fly!! And My speed is:  10m/s</span>
+<span class="pl-smi">peacock</span>.<span class="pl-c1">move</span>(); <span class="pl-c">// I am living thing! I can move!! And I eat:  snakes</span></pre></div>
+
+<p>Closely see the <code>Peacock</code> function and notice that we have made the <code>Bird</code> function point to the <code>Peacock</code> object. We have used <code>call</code> here as we know that there is no <code>super</code> keyword in <code>JavaScript</code> to point to the parent <strong>constructor</strong>. Similarily, we have made <code>LivingThing</code> function point to the peacock object. So the gist is that we are executing <code>LivingThing</code> and <code>Bird</code> functions in <code>context</code> to <code>Peacock</code> object only.</p>
+
+<blockquote>
+<p>NOTE: With the help of second and third solution, our remaining Problem will solve. :-)</p>
+</blockquote>
+
+<p>There are a lot of ways to achieve a single thing, but it depends upon the need of the project and the situation that one can decide which way to adopt!</p>
+
+<h2>
+<a id="follow-me" class="anchor" href="#follow-me" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Follow Me</h2>
+
+<p><a href="https://github.com/NamitaMalik">Github</a></p>
+
+<p><a href="https://twitter.com/namita13_04">Twitter</a></p>
+
+<p><a href="https://in.linkedin.com/in/namita-malik-a7885b23">LinkedIn</a></p>
+
+<p><a href="https://namitamalik.github.io/">More Blogs By Me</a></p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/NamitaMalik/JavaScript-Inheritance-Revisited">Javascript Inheritance Revisited</a> is maintained by <a href="https://github.com/NamitaMalik">NamitaMalik</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
